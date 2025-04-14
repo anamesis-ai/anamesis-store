@@ -1,4 +1,5 @@
 import { useState } from "react";
+import products from "../data/products";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
@@ -6,6 +7,7 @@ export default function Home() {
   return (
     <div className={darkMode ? "dark" : ""}>
       <div className="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 min-h-screen transition-colors duration-300 relative">
+        
         {/* Floating Toggle */}
         <button
           onClick={() => setDarkMode(!darkMode)}
@@ -35,18 +37,24 @@ export default function Home() {
           id="products"
           className="px-4 py-16 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 scroll-mt-24"
         >
-          {[1, 2, 3, 4, 5, 6].map((id) => (
+          {products.map((product) => (
             <div
-              key={id}
+              key={product.id}
               className="border rounded-lg p-4 shadow-sm hover:shadow-md transition bg-white dark:bg-gray-900 dark:border-gray-700"
             >
-              <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
-              <h2 className="text-lg font-semibold mb-2">Product Name</h2>
+              <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded mb-4 overflow-hidden flex items-center justify-center">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="h-full object-cover"
+                />
+              </div>
+              <h2 className="text-lg font-semibold mb-2">{product.name}</h2>
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                Brief description or value prop here.
+                {product.description}
               </p>
               <a
-                href="#"
+                href={product.link}
                 className="inline-block px-4 py-2 bg-black text-white dark:bg-white dark:text-black text-sm rounded hover:bg-gray-800 dark:hover:bg-gray-200 transition"
               >
                 View Product

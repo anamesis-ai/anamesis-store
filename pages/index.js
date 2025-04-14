@@ -1,5 +1,5 @@
 import { useState } from "react";
-import products from "../data/products";
+import categories from "../data/categories";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
@@ -7,7 +7,6 @@ export default function Home() {
   return (
     <div className={darkMode ? "dark" : ""}>
       <div className="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 min-h-screen transition-colors duration-300 relative">
-        
         {/* Floating Toggle */}
         <button
           onClick={() => setDarkMode(!darkMode)}
@@ -25,40 +24,40 @@ export default function Home() {
             Built for clarity, not clicks.
           </p>
           <a
-            href="#products"
+            href="#categories"
             className="mt-8 px-6 py-3 bg-black text-white dark:bg-white dark:text-black rounded-full text-sm md:text-base hover:bg-gray-800 dark:hover:bg-gray-200 transition"
           >
-            See What We Recommend
+            Explore Our Top Tools
           </a>
         </section>
 
-        {/* PRODUCT SECTION */}
+        {/* CATEGORY SECTION */}
         <section
-          id="products"
-          className="px-4 py-16 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 scroll-mt-24"
+          id="categories"
+          className="px-4 py-16 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 scroll-mt-1"
         >
-          {products.map((product) => (
+          {categories.map((cat) => (
             <div
-              key={product.id}
-              className="border rounded-lg p-4 shadow-sm hover:shadow-md transition bg-white dark:bg-gray-900 dark:border-gray-700"
+              key={cat.id}
+              className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition bg-white dark:bg-gray-900 dark:border-gray-700"
             >
-              <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded mb-4 overflow-hidden flex items-center justify-center">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-full object-cover"
-                />
+              <img
+                src={cat.image}
+                alt={cat.name}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h2 className="text-lg font-semibold mb-2">{cat.name}</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  {cat.description}
+                </p>
+                <a
+                  href={cat.link}
+                  className="inline-block px-4 py-2 bg-black text-white dark:bg-white dark:text-black text-sm rounded hover:bg-gray-800 dark:hover:bg-gray-200 transition"
+                >
+                  View Category
+                </a>
               </div>
-              <h2 className="text-lg font-semibold mb-2">{product.name}</h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                {product.description}
-              </p>
-              <a
-                href={product.link}
-                className="inline-block px-4 py-2 bg-black text-white dark:bg-white dark:text-black text-sm rounded hover:bg-gray-800 dark:hover:bg-gray-200 transition"
-              >
-                View Product
-              </a>
             </div>
           ))}
         </section>

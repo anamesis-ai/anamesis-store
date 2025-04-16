@@ -43,7 +43,7 @@ export default function Home() {
               {cat.description}
             </p>
             <a
-              href={`/products?category=${cat.id}`}
+              href={`/products?category=${cat.slug}`}
               className="inline-block px-4 py-2 bg-black text-white dark:bg-white dark:text-black rounded hover:bg-gray-800 dark:hover:bg-gray-200 transition"
             >
               View Category

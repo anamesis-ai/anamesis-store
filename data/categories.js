@@ -2,7 +2,7 @@ const categories = [
     {
       id: 1,
       name: "Focus & Attention",
-      slug: "focus",
+      slug: "focus-tools",
       description: "Tools to sharpen concentration, reduce distraction, and sustain deep work.",
       image: "focus.jpg"
     },

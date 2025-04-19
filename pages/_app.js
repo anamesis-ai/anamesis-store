@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import { UIProvider, UIContext } from "../context/UIContext";
-import FloatingNav from "../components/FloatingNav";
+import TopNav from "../components/TopNav";
+import CategorySidebar from "../components/CategorySidebar";
 import { useEffect, useState, useContext } from "react";
 import smoothscroll from "smoothscroll-polyfill";
 
@@ -30,8 +31,12 @@ function Layout({ children }) {
   return (
     <div className={`${darkMode ? "dark" : ""}`}>
       <div className={`min-h-screen bg-white dark:bg-[#121212] text-gray-900 dark:text-gray-100 transition-colors duration-300 ${fontSizeClass}`}>
-        <FloatingNav />
+        
+        <TopNav />
+        {typeof window !== "undefined" && window.location.pathname === "/products" && <CategorySidebar />}
+        
         {children}
+  
         {showTopButton && (
           <button
             onClick={scrollToTop}

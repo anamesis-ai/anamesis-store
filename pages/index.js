@@ -1,3 +1,4 @@
+import Link from "next/link";
 import categories from "../data/categories";
 
 export default function Home() {
@@ -42,12 +43,11 @@ export default function Home() {
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               {cat.description}
             </p>
-            <a
-              href={`/products?category=${cat.slug}`}
-              className="inline-block px-4 py-2 bg-black text-white dark:bg-white dark:text-black rounded hover:bg-gray-800 dark:hover:bg-gray-200 transition"
-            >
-              View Category
-            </a>
+            <Link href={`/products?category=${cat.slug}`}>
+              <span className="inline-block px-4 py-2 bg-black text-white dark:bg-white dark:text-black rounded hover:bg-gray-800 dark:hover:bg-gray-200 transition cursor-pointer">
+                View Category
+              </span>
+            </Link>
           </div>
         ))}
       </section>

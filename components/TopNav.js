@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 export default function TopNav() {
   const { darkMode, setDarkMode, fontSize, setFontSize } = useContext(UIContext);
   const router = useRouter();
+  const activeCategory = router.query.category || "";
 
   const categories = [
     { slug: "", name: "All Products" },
@@ -18,7 +19,7 @@ export default function TopNav() {
   ];
 
   return (
-    <header className="w-full px-6 py-3 flex justify-between items-center border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm fixed top-0 left-0 z-50 shadow-sm dark:shadow-md">
+    <header className="w-full px-6 py-3 flex flex-col md:flex-row md:justify-between md:items-center border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm fixed top-0 left-0 z-50 shadow-sm dark:shadow-md gap-3">
       {/* Left: Logo / Home */}
       <Link href="/" className="block">
         <img
@@ -28,20 +29,22 @@ export default function TopNav() {
         />
       </Link>
 
-      {/* Center: Category Links (only show outside /products) */}
-      {router.pathname !== "/products" && (
-        <nav className="hidden md:flex gap-4 justify-center items-center">
-          {categories.map((cat) => (
-            <Link
-              key={cat.slug}
-              href={cat.slug ? `/products?category=${cat.slug}` : "/products"}
-              className="hover:underline hover:shadow-sm hover:shadow-gray-300 dark:hover:shadow-gray-600 px-2 py-1 transition"
-            >
-              {cat.name}
-            </Link>
-          ))}
-        </nav>
-      )}
+      {/* Center: Category Navigation */}
+      <nav className="flex flex-wrap justify-center gap-2 text-sm">
+        {categories.map((cat) => (
+          <Link
+            key={cat.slug}
+            href={cat.slug ? `/products?category=${cat.slug}` : "/products"}
+            className={`px-3 py-1 rounded transition font-medium ${
+              router.pathname === "/products" && activeCategory === cat.slug
+                ? "bg-black text-white dark:bg-white dark:text-black"
+                : "text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"
+            }`}
+          >
+            {cat.name}
+          </Link>
+        ))}
+      </nav>
 
       {/* Right: Toggles */}
       <div className="flex flex-col items-end gap-1">

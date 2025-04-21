@@ -8,18 +8,33 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        sm: '0.875rem', // 14px
-        base: '1rem',    // 16px
-        lg: '1.125rem',  // 18px
+        sm: '0.875rem',
+        base: '1rem',
+        lg: '1.125rem',
       },
-      animation: {
-        'fade-in': 'fadeIn 0.4s ease-out',
+      colors: {
+        gray: {
+          50:  "#f9f9f9",
+          100: "#f0f0f0",
+          200: "#e0e0e0",
+          300: "#cfcfcf",
+          400: "#a5a5a5",
+          500: "#7c7c7c",
+          600: "#5a5a5a",
+          700: "#3d3d3d",
+          800: "#2a2a2a",
+          900: "#1a1a1a",
+          950: "#121212",
+        },
       },
       keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0', transform: 'translateY(10px)' },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+      },
+      animation: {
+        fadeInUp: 'fadeInUp 0.6s ease-out forwards',
       },
     },
   },

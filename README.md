@@ -32,3 +32,10 @@ git clone https://github.com/anamesis-ai/anamesis-store.git
 cd anamesis-store
 npm install
 npm run dev
+```
+
+---
+
+## 🗺 Roadmap
+
+View our evolving project direction and priorities in [docs/roadmap.md](docs/roadmap.md).

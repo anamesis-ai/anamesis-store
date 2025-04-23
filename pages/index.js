@@ -57,7 +57,7 @@ export default function Home() {
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
                 {cat.description}
               </p>
-              <Link href={`/products?category=${cat.slug}`}>
+              <Link href={`/products/${cat.slug}`}>
                 <span className="inline-block px-4 py-2 bg-black text-white dark:bg-white dark:text-black rounded hover:bg-gray-800 dark:hover:bg-gray-200 transition cursor-pointer">
                   View Category
                 </span>

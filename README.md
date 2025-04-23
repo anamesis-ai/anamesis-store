@@ -8,11 +8,31 @@ Anamesis Store is designed to offer high-integrity product recommendations acros
 
 ## 🌱 Project Vision
 
-This is not just a store. It’s a system designed to:
+Anamesis Store is more than a storefront—it's a prototype for AI-native, non-extractive commerce.
+
+This platform is designed to:
 
 - Promote clarity over consumption.
-- Recommend intentionally selected products aligned with cognitive, emotional, and physiological well-being.
-- Serve as a foundational testbed for future regenerative and autonomous AI commerce systems.
+- Recommend regenerative, high-integrity tools across six life-shaping categories.
+- Demonstrate a scalable system that honors user intent over manipulation.
+- Serve as a dual-intelligence architecture: one layer for personalized user insight, one for fully automated business operations.
+- Model a path for regenerative digital economies and ethical AI collaboration.
+
+It starts small. It learns. And it evolves—toward a future where intelligence supports wellbeing, not exploitation.
+
+---
+
+## 🧭 North Star
+
+This project is grounded in a belief that intelligence—human and artificial—can serve clarity, agency, and long-term planetary flourishing.
+
+We aim to:
+
+- Build wealth and insight within today's system.
+- Strategically redirect both toward regenerative outcomes.
+- Use AI not just to scale commerce, but to reshape its values.
+
+Anamesis is proof that ethical, elegant, intelligent systems are not only possible—they’re inevitable.
 
 ---
 
@@ -32,10 +52,3 @@ git clone https://github.com/anamesis-ai/anamesis-store.git
 cd anamesis-store
 npm install
 npm run dev
-```
-
----
-
-## 🗺 Roadmap
-
-View our evolving project direction and priorities in [docs/roadmap.md](docs/roadmap.md).

@@ -9,7 +9,7 @@ export default function TopNav() {
   const activeCategory = router.query.category || "";
 
   const categories = [
-    { slug: "", name: "All Products" },
+    { slug: "all", name: "All Products" },
     { slug: "focus-tools", name: "Focus & Attention" },
     { slug: "mind-body", name: "Mind–Body Health" },
     { slug: "workflow", name: "Digital Workflow" },
@@ -33,16 +33,17 @@ export default function TopNav() {
       <nav className="flex flex-wrap justify-center gap-2 text-sm">
         {categories.map((cat) => (
           <Link
-            key={cat.slug}
-            href={cat.slug ? `/products?category=${cat.slug}` : "/products"}
-            className={`px-3 py-1 rounded transition font-medium ${
-              router.pathname === "/products" && activeCategory === cat.slug
-                ? "bg-black text-white dark:bg-white dark:text-black"
-                : "text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"
-            }`}
-          >
-            {cat.name}
-          </Link>
+          key={cat.slug}
+          href={cat.slug === "all" ? "/products" : `/products/${cat.slug}`}
+          className={`px-3 py-1 rounded transition font-medium ${
+            (router.pathname === "/products" && cat.slug === "all") ||
+            router.asPath === `/products/${cat.slug}`
+              ? "bg-black text-white dark:bg-white dark:text-black"
+              : "text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"
+          }`}
+        >
+          {cat.name}
+        </Link>
         ))}
       </nav>
 

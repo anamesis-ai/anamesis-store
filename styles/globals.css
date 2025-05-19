@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .bg-center-gradient {
+    background: linear-gradient(
+      to right,
+      #d4d4d4 0%,
+      #ffffff 50%,
+      #d4d4d4 100%
+    );
+  }
+
+  .bg-center-gradient-dark {
+    background: linear-gradient(
+      to right,
+      #1f1f1f 0%,
+      #000000 50%,
+      #1f1f1f 100%
+    );
+  }
+}

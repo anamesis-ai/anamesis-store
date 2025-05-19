@@ -2,72 +2,128 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import products from "../../data/products";
 import categories from "../../data/categories";
+import { useEffect, useState } from "react";
+import { getStoredRef } from "../../utils/tracking";
+import { trackEvent } from "../../lib/track";
 
 export default function CategoryPage() {
   const router = useRouter();
   const { category } = router.query;
 
-  const filteredProducts = category
-    ? products.filter((p) => p.category === category)
-    : products;
+  const [rankedProducts, setRankedProducts] = useState([]);
+  const [scrollDepthsTracked, setScrollDepthsTracked] = useState([]);
+  const [hoveredCards, setHoveredCards] = useState([]);
 
-  const categoryLabel = categories.find((c) => c.slug === category)?.name;
+  useEffect(() => {
+    const ref = getStoredRef();
 
-  const headerText =
+    const rankProductsByPersona = (ref, filtered) => {
+      return filtered;
+    };
+
+    if (category) {
+      const filtered = products.filter((p) => p.category === category);
+      setRankedProducts(rankProductsByPersona(ref, filtered));
+    } else {
+      setRankedProducts(rankProductsByPersona(ref, products));
+    }
+
+    const categoryObj = categories.find((c) => c.slug === category);
+    trackEvent("view_category", {
+      category: category || "all",
+      label: categoryObj?.name || "All Products",
+    });
+
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      const scrolled = Math.round(((scrollTop + windowHeight) / docHeight) * 100);
+
+      const thresholds = [25, 50, 75, 100];
+      thresholds.forEach((t) => {
+        if (scrolled >= t && !scrollDepthsTracked.includes(t)) {
+          trackEvent("scroll_depth", { category: category || "all", depth: `${t}%` });
+          setScrollDepthsTracked((prev) => [...prev, t]);
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [category, scrollDepthsTracked]);
+
+  const handleHover = (productSlug) => {
+    if (!hoveredCards.includes(productSlug)) {
+      trackEvent("hover_product_card", { category, slug: productSlug });
+      setHoveredCards((prev) => [...prev, productSlug]);
+    }
+  };
+
+  const categoryObj = categories.find((c) => c.slug === category);
+  const categoryLabel = categoryObj?.name;
+  const categoryDescription = categoryObj?.description;
+
+  const headerText = categoryDescription ||
     "Curated tools for clarity and momentum. Only what we’d recommend to a close friend. No ads, no pressure, no fluff.";
 
   return (
-    <div className="min-h-screen bg-gray-light-100 dark:bg-gray-dark-100 text-gray-light-900 dark:text-gray-dark-100 px-4 pt-32 pb-12 transition-colors duration-300">
-      <div className="flex max-w-7xl mx-auto">
+    <div className="relative min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 px-4 pt-32 pb-12 transition-colors duration-300 overflow-hidden">
+      <div className="absolute inset-0 z-0 bg-center-gradient dark:bg-center-gradient-dark opacity-40 pointer-events-none"></div>
+
+      <div className="relative z-10 flex max-w-7xl mx-auto flex-col gap-16">
         <div className="flex-1">
           <h1 className="text-2xl md:text-3xl font-semibold mb-2 text-center">
-            {categoryLabel ? categoryLabel : "All Products"}
+            {categoryLabel || "All Products"}
           </h1>
-          <p className="text-center text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto">
+          <p className="text-center text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
             {headerText}
           </p>
 
-          {filteredProducts.length === 0 ? (
-            <p className="text-center text-gray-light-600 dark:text-gray-dark-400">
+          {rankedProducts.length === 0 ? (
+            <p className="text-center text-gray-600 dark:text-gray-400">
               No products available in this category yet.
             </p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-              {filteredProducts.map((product, index) => (
+              {rankedProducts.map((product, index) => (
                 <div
-                key={product.id}
-                className="h-full opacity-0 animate-fadeInUp"
-                style={{ animationDelay: `${index * 80}ms` }}
-              >
-                <div className="flex flex-col justify-between h-full border rounded-lg p-4 shadow-sm bg-gray-light-100 dark:bg-gray-dark-200 border-gray-light-300 dark:border-gray-dark-300 transform transition-transform duration-300 ease-in-out hover:-translate-y-1 hover:shadow-[0_6px_12px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_6px_12px_rgba(255,255,255,0.25)]">
-                  <div>
-                    <div className="h-48 w-full bg-gray-light-200 dark:bg-gray-dark-300 rounded mb-4 flex items-center justify-center overflow-hidden">
+                  key={product.id}
+                  className="h-full opacity-0 animate-fadeInUp"
+                  style={{ animationDelay: `${index * 80}ms` }}
+                  onMouseEnter={() => handleHover(product.slug)}
+                >
+                  <div className="flex flex-col justify-between h-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg p-4 shadow-sm transform transition-transform duration-300 ease-in-out hover:-translate-y-1 hover:shadow-[0_6px_12px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_6px_12px_rgba(255,255,255,0.25)]">
+                    <div>
+                    <div className="w-40 h-40 sm:w-48 sm:h-48 mx-auto rounded border border-gray-300 dark:border-gray-700 shadow-sm flex items-center justify-center bg-white dark:bg-gray-950">
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="h-full w-full object-cover rounded"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = "/images/fallback.jpg";
-                        }}
+                        className="max-h-full max-w-full object-contain"
                       />
                     </div>
-                    <h2 className="text-lg font-semibold mb-2">{product.name}</h2>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                      {product.fallbackDescription}
-                    </p>
-                  </div>
-              
-                  <div className="mt-auto">
-                    <Link
-                      href={`/products/product?slug=${product.slug}`}
-                      className="inline-block px-4 py-2 bg-black text-white dark:bg-white dark:text-black text-sm rounded hover:bg-gray-800 dark:hover:bg-gray-dark-100 transition"
-                    >
-                      View Product
-                    </Link>
+                      <h2 className="text-lg font-semibold mb-2">{product.name}</h2>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                        {product.fallbackDescription}
+                      </p>
+                    </div>
+
+                    <div className="mt-auto">
+                      <Link
+                        href={`/products/product?slug=${product.slug}`}
+                        onClick={() =>
+                          trackEvent("click_product_card", {
+                            category,
+                            slug: product.slug,
+                          })
+                        }
+                        className="inline-block px-4 py-2 bg-black text-white dark:bg-white dark:text-black text-sm rounded-md hover:bg-gray-800 dark:hover:bg-gray-200 transition"
+                      >
+                        View Product
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
               ))}
             </div>
           )}

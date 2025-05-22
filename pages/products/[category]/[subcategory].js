@@ -79,27 +79,27 @@ export default function SubcategoryPage() {
 
   return (
     <div className="relative min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 px-4 pt-32 pb-12 transition-colors duration-300 overflow-hidden">
-      <div className="absolute inset-0 z-0 bg-center-gradient dark:bg-center-gradient-dark opacity-40 pointer-events-none" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-950 dark:to-black opacity-50 pointer-events-none" />
 
       <div className="relative z-10 flex max-w-7xl mx-auto flex-col gap-16">
         <div className="flex-1">
-          <h1 className="text-2xl md:text-3xl font-semibold mb-2 text-center">
+          <h1 className="text-2xl md:text-3xl font-semibold mb-4 text-center font-display">
             {subcategoryLabel || "Subcategory"}
           </h1>
-          <p className="text-center text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
+          <p className="text-center text-base md:text-lg leading-relaxed text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
             {headerText}
           </p>
 
           {rankedProducts.length === 0 ? (
-            <p className="text-center text-gray-600 dark:text-gray-400">
-              No products found in this subcategory.
+            <p className="text-center text-base text-gray-600 dark:text-gray-400 max-w-xl mx-auto leading-relaxed font-display">
+              Nothing here yet — but we’re always curating. Check back soon for pieces that fit this space beautifully.
             </p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
               {rankedProducts.map((product, index) => (
                 <div
                   key={product.id}
-                  className="h-full opacity-0 animate-fadeInUp"
+                  className="h-full opacity-0 motion-safe:animate-fadeInUp will-change-transform"
                   style={{ animationDelay: `${index * 80}ms` }}
                 >
                   <div
@@ -114,18 +114,22 @@ export default function SubcategoryPage() {
                         className="max-h-full max-w-full object-contain"
                       />
                     </div>
-                      <h2 className="text-lg font-semibold mb-2">{product.name}</h2>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                      <h2 className="text-lg font-semibold mb-2 font-display">{product.name}</h2>
+                      <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400 mb-4">
                         {product.fallbackDescription}
                       </p>
                     </div>
                     <div className="mt-auto">
                       <Link
                         href={`/products/product?slug=${product.slug}`}
-                        className="inline-block px-4 py-2 bg-black text-white dark:bg-white dark:text-black text-sm rounded-md hover:bg-gray-800 dark:hover:bg-gray-200 transition"
                         onClick={() => handleClick(product.slug)}
                       >
-                        View Product
+                        <span className="inline-flex items-center px-4 py-2 bg-black text-white dark:bg-white dark:text-black text-sm rounded-md hover:bg-gray-800 dark:hover:bg-gray-200 transition cursor-pointer group">
+                          View Product
+                          <span className="ml-2 transform transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none">
+                            →
+                          </span>
+                        </span>
                       </Link>
                     </div>
                   </div>

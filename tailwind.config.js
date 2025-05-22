@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['"Playfair Display"', 'serif'],
+      },
       fontSize: {
         sm: '0.875rem',
         base: '1rem',
@@ -32,9 +35,14 @@ module.exports = {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        breathe: {
+          '0%, 100%': { transform: 'translateY(0)', opacity: 0.6 },
+          '50%': { transform: 'translateY(4px)', opacity: 1 },
+        },
       },
       animation: {
         fadeInUp: 'fadeInUp 0.6s ease-out forwards',
+        'breathe-slow': 'breathe 2.5s ease-in-out infinite',
       },
     },
   },

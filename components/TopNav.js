@@ -114,18 +114,18 @@ export default function TopNav() {
 
   return (
     <header className="w-full fixed top-0 left-0 z-50 text-sm">
-      <div className="w-full px-6 py-3 flex justify-between items-center border-b border-gray-300 dark:border-gray-700 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-sm dark:shadow-md">
+      <div className="w-full px-4 md:px-6 py-2 md:py-3 flex justify-between items-center border-b border-gray-300 dark:border-gray-700 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-sm dark:shadow-md">
         <Link href="/" className="block" onMouseEnter={handleClose}>
           <img
             src={darkMode ? "/images/logo-dark.jpg" : "/images/logo-light.jpg"}
             alt="anamesis Logo"
-            className="h-8 w-auto transition-transform duration-200 hover:scale-105 cursor-pointer ml-1"
+            className="h-8 w-auto transition-transform duration-200 hover:scale-105 hover:rotate-[1deg] cursor-pointer ml-1"
             onClick={() => trackEvent("click_logo", { location: "TopNav" })}
           />
         </Link>
 
         <nav
-          className="flex flex-wrap justify-center gap-3 text-sm"
+          className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm"
           onMouseLeave={handleClose}
           onMouseEnter={cancelClose}
         >
@@ -140,9 +140,9 @@ export default function TopNav() {
             >
               <Link
                 href={`/products/${cat.slug}`}
-                className={`px-4 py-2 rounded-md transition font-medium ${
+                className={`px-4 py-2 rounded-md transition font-medium relative after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-0.5 after:h-[2px] after:w-0 after:bg-current after:transition-all after:duration-300 hover:after:w-6 ${
                   router.asPath.startsWith(`/products/${cat.slug}`)
-                    ? "bg-black text-white dark:bg-white dark:text-black"
+                    ? "bg-black text-white dark:bg-white dark:text-black shadow-[0_0_8px_rgba(0,0,0,0.15)] dark:shadow-[0_0_8px_rgba(255,255,255,0.2)]"
                     : "text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"
                 }`}
                 onClick={() => trackEvent("click_category", { slug: cat.slug })}
@@ -156,7 +156,8 @@ export default function TopNav() {
         <div onMouseEnter={handleClose} className="flex flex-col items-end gap-1">
           <button
             onClick={handleDarkModeToggle}
-            className="w-[90px] py-1 bg-gray-200 dark:bg-gray-600 rounded text-black dark:text-white text-sm text-center"
+            aria-label={darkMode ? "Switch to light mode for clarity and calm" : "Switch to dark mode for focus and rest"}
+            className="w-[90px] py-1 bg-gray-200 dark:bg-gray-600 rounded text-black dark:text-white text-sm text-center transition-all hover:brightness-105"
           >
             {darkMode ? "☀ Light" : "🌙 Dark"}
           </button>
@@ -179,33 +180,35 @@ export default function TopNav() {
       </div>
 
       {hoveredCategory && (
-        <div
-          onMouseLeave={handleClose}
-          onMouseEnter={cancelClose}
-          className={`w-full px-6 py-3 flex justify-center gap-4 font-medium backdrop-blur-md shadow-sm dark:shadow-md border-b ${
-            darkMode
-              ? "bg-gray-800 text-white border-gray-600"
-              : "bg-gray-100 text-black border-gray-300"
-          }`}
-          style={{ minHeight: "56px" }}
-        >
-          {categories
-            .find((cat) => cat.slug === hoveredCategory)
-            ?.subcategories.map((sub, idx) => (
-              <Link
-                key={idx}
-                href={`/products/${hoveredCategory}/${slugify(sub)}`}
-                className="hover:underline px-2"
-                onClick={() =>
-                  trackEvent("click_subcategory", {
-                    category: hoveredCategory,
-                    subcategory: sub,
-                  })
-                }
-              >
-                {sub}
-              </Link>
-            ))}
+        <div className="motion-safe:animate-fadeInUp motion-safe:will-change-transform">
+          <div
+            onMouseLeave={handleClose}
+            onMouseEnter={cancelClose}
+            className={`w-full px-6 py-3 flex justify-center gap-4 font-medium backdrop-blur-md border-b ${
+              darkMode
+                ? "bg-gray-800/70 text-white border-gray-700 shadow-inner"
+                : "bg-white/70 text-black border-gray-300 shadow-inner"
+            }`}
+            style={{ minHeight: "56px" }}
+          >
+            {categories
+              .find((cat) => cat.slug === hoveredCategory)
+              ?.subcategories.map((sub, idx) => (
+                <Link
+                  key={idx}
+                  href={`/products/${hoveredCategory}/${slugify(sub)}`}
+                  className="px-3 py-1 transition-all duration-200 rounded-full hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
+                  onClick={() =>
+                    trackEvent("click_subcategory", {
+                      category: hoveredCategory,
+                      subcategory: sub,
+                    })
+                  }
+                >
+                  {sub}
+                </Link>
+              ))}
+          </div>
         </div>
       )}
     </header>

@@ -53,7 +53,7 @@ export default function Home() {
             <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-xl mx-auto mb-2 animate-fadeInUp">
               Every category here holds something quietly beautiful — thoughtfully chosen to support your rhythm, your rituals, your sense of self. Take a breath, scroll slowly, and explore what calls to you.
             </p>
-            <p className="text-xl md:text-2xl text-gray-400 dark:text-gray-600 animate-breathe-slow select-none">↓</p>
+            <p className="text-2xl md:text-3xl text-gray-400 dark:text-gray-600 animate-breathe-slow select-none">↓</p>
           </div>
         </section>
 
